@@ -7,22 +7,26 @@
 
 import Foundation
 
-//@dynamicMemberLookup public class HTMLAttributes {
-//    var attributes: [String: String]
-//    
-//    subscript(dynamicMember attributeName: String) -> String {
-//        return attributes[attributeName, default: ""]
-//    }
-//    
-//    func render() -> String {
-//        return attributes.map { key, value in "\(key)=\"\(value)\"" }.joined(separator: " ")
-//    }
-//    
-//    public init(with attributes: [String: String]) {
-//        self.attributes = attributes
-//    }
-//    
-//    public init() {
-//        self.attributes = [:]
-//    }
-//}
+@dynamicMemberLookup public struct HTMLAttributes {
+    private var attributes: [String: String] = [:]
+    
+    public subscript(dynamicMember attribute: String) -> String {
+        return attributes[attribute, default: ""]
+    }
+    
+    public init() {
+        attributes = [:]
+    }
+    
+    public init(with attributes: [String: String]) {
+        self.attributes = attributes
+    }
+    
+    public func render() -> String {
+        return attributes.map { key, value in "\(key)=\"\(value)\"" }.joined(separator: " ")
+    }
+}
+
+public protocol HasHTMLAttributes: HTML {
+    var attributes: HTMLAttributes { get }
+}

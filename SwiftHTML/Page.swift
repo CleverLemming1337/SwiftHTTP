@@ -34,16 +34,23 @@ public protocol HTML {
 public protocol HTMLElement: HTML {
     var tagName: String { get }
     @HTMLBuilder var body: HTML? { get }
-    
 }
 
 public extension HTMLElement {
     /// Default implementation to render an HTML element
     func render() -> String {
         if let body = body {
-            return "<\(tagName)>\(body.render())</\(tagName)>"
+            if let attributes = Mirror(reflecting: self).children.filter({ $0.label == "attributes" }).first?.value as? HTMLAttributes {
+                return "<\(tagName) \(attributes.render())>\(body.render())</\(tagName)>" // TODO: not beautiful. Make better
+            }
+            return "<\(tagName)>\(body.render())</\(tagName)>" // TODO: not beautiful. Make better
         }
-        return "<\(tagName)/>"
+        if let attributes = Mirror(reflecting: self).children.filter({ $0.label == "attributes" }).first?.value as? HTMLAttributes {
+            return "<\(tagName) \(attributes.render())/>"
+        }
+        else {
+            return "<\(tagName)/>"
+        }
     }
     
     var body: HTML? { nil }
@@ -80,13 +87,13 @@ public struct Page: HTMLElement {
 
 /// Example of a self-closing tag
 public struct Img: HTMLElement {
-//    public var attributes: HTMLAttributes
+    public var attributes: HTMLAttributes
     public let tagName: String = "img"
     
     public init(src: String, alt: String = "") {
-//        attributes = HTMLAttributes(with: [
-//            "src": src,
-//            "alt": alt
-//        ])
+        attributes = HTMLAttributes(with: [
+            "src": src,
+            "alt": alt
+        ])
     }
 }
