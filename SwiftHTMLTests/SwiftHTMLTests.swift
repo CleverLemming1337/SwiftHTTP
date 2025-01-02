@@ -2,7 +2,7 @@
 //  SwiftHTMLTests.swift
 //  SwiftHTMLTests
 //
-//  Created by Leonard Fekete on 01.01.24.
+//  Created by Leonard Fekete on 02.01.25.
 //
 
 import Testing
@@ -12,6 +12,9 @@ struct SwiftHTMLTests {
 
     @Test func example() async throws {
         // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+        print(Page {
+            Img(src: "https://...", alt: "An image")
+        }.render())
     }
 
 }
