@@ -18,6 +18,10 @@ struct SwiftHTMLTests {
     @Test func savePage() async throws {
         SamplePage().buildFile(to: URL(fileURLWithPath: "\(NSHomeDirectory())/Desktop"))
     }
+    
+    @Test func formPage() async throws {
+        FormPage().buildFile(to: URL(fileURLWithPath: "\(NSHomeDirectory())/Desktop"))
+    }
 }
 
 struct SamplePage: HTMLPage {
@@ -25,6 +29,7 @@ struct SamplePage: HTMLPage {
     
     var body: HTML {
         Heading("This is SwiftHTML")
+        Link(to: "tutorial", "Tutorial")
         Image(from: "https://512pixels.net/wp-content/uploads/2024/06/15-Sequoia-Light-16x9-Thumbnail_2-500x500.jpg", alt: "This is an example image")
         Paragraph("SwiftHTML is a Swift framework that lets you build HTML sites with Swift's declarative result builder syntax.\nHere an example:")
         Code("""
@@ -43,5 +48,18 @@ struct SamplePage: HTMLPage {
                 }
             }
         """)
+    }
+}
+
+struct FormPage: HTMLPage {
+    let name = "FormPage"
+    
+    var body: HTML {
+        Heading("Sample form")
+        Form(action: "/handleform") {
+            Input(name: "entered_text", placeholder: "Enter some text...")
+            LineBreak()
+            Input(.submit, value: "Submit")
+        }
     }
 }
