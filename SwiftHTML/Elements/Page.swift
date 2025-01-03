@@ -7,23 +7,15 @@
 
 import Foundation
 
-/// Represents a full HTML page
-public struct Page: HTMLElement {
-    public var tagName: String { "html" }
-    public let name: String
+public protocol HTMLPage: HTMLElement {
+    var name: String { get }
+}
+
+public extension HTMLPage {
+    var name: String { UUID().uuidString }
+    var tagName: String { "html" }
     
-    public var body: HTML? {
-        content
-    }
-    
-    private let content: HTML
-    
-    public init(_ name: String = UUID().uuidString , @HTMLBuilder _ content: () -> HTML) {
-        self.content = content()
-        self.name = name
-    }
-    
-    public func buildFile(to path: consuming URL) {
+    func buildFile(to path: consuming URL) {
         let buildPath = path.appending(path: "build")
         do {
             try FileManager.default.createDirectory(at: buildPath, withIntermediateDirectories: true)
@@ -32,5 +24,22 @@ public struct Page: HTMLElement {
         catch {
             print("Error saving \(name): \(error.localizedDescription)")
         }
+    }
+}
+
+/// Represents a full HTML page
+public struct Page: HTMLPage {
+    public var tagName: String { "html" }
+    public let name: String
+    
+    public var body: HTML {
+        content
+    }
+    
+    private let content: HTML
+    
+    public init(_ name: String = UUID().uuidString , @HTMLBuilder _ content: () -> HTML) {
+        self.content = content()
+        self.name = name
     }
 }

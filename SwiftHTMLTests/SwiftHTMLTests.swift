@@ -16,8 +16,14 @@ struct SwiftHTMLTests {
     }
     
     @Test func savePage() async throws {
-        Page("TestPage") {
-            Image(from: "https://...")
-        }.buildFile(to: URL(fileURLWithPath: "\(NSHomeDirectory())/Desktop"))
+        TestPage().buildFile(to: URL(fileURLWithPath: "\(NSHomeDirectory())/Desktop"))
+    }
+}
+
+struct TestPage: HTMLPage {
+    let name = "TestPage"
+    
+    var body: HTML {
+        Image(from: "Test", alt: "Test")
     }
 }

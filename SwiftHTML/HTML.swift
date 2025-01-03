@@ -33,27 +33,28 @@ public protocol HTML {
 /// Represents a basic HTML element
 public protocol HTMLElement: HTML {
     var tagName: String { get }
-    @HTMLBuilder var body: HTML? { get }
+    @HTMLBuilder var body: HTML { get }
 }
 
 public extension HTMLElement {
     /// Default implementation to render an HTML element
     func render() -> String {
-        if let body = body {
+        if let body = body as? EmptyHTML { // element has no own body
             if let attributes = Mirror(reflecting: self).children.filter({ $0.label == "attributes" }).first?.value as? HTMLAttributes {
-                return "<\(tagName) \(attributes.render())>\(body.render())</\(tagName)>" // TODO: not beautiful. Make better
+                return "<\(tagName) \(attributes.render())/>"
             }
-            return "<\(tagName)>\(body.render())</\(tagName)>" // TODO: not beautiful. Make better
+            else {
+                return "<\(tagName)/>"
+            }
         }
+        
         if let attributes = Mirror(reflecting: self).children.filter({ $0.label == "attributes" }).first?.value as? HTMLAttributes {
-            return "<\(tagName) \(attributes.render())/>"
+            return "<\(tagName) \(attributes.render())>\(body.render())</\(tagName)>"
         }
-        else {
-            return "<\(tagName)/>"
-        }
+        return "<\(tagName)>\(body.render())</\(tagName)>"
     }
     
-    var body: HTML? { nil }
+    var body: HTML { EmptyHTML() }
 }
 
 /// Represents raw HTML text
@@ -66,5 +67,12 @@ public struct HTMLText: HTML {
     
     public func render() -> String {
         text
+    }
+}
+
+
+public struct EmptyHTML: HTML {
+    public func render() -> String {
+        return ""
     }
 }
