@@ -1,8 +1,8 @@
 //
-//  SwiftHTTPTests.swift
-//  SwiftHTTPTests
+//  HTML.swift
+//  SwiftHTML
 //
-//  Created by Leonard Fekete on 02.01.25.
+//  Created by Leonard Fekete on 03.01.25.
 //
 
 import Foundation
@@ -66,34 +66,5 @@ public struct HTMLText: HTML {
     
     public func render() -> String {
         text
-    }
-}
-
-/// Represents a full HTML page
-public struct Page: HTMLElement {
-    public var tagName: String { "html" }
-    
-    @HTMLBuilder public var body: HTML? {
-        content
-    }
-    
-    private let content: HTML
-    
-    public init(@HTMLBuilder _ content: () -> HTML) {
-        self.content = content()
-    }
-}
-
-
-/// Example of a self-closing tag
-public struct Img: HTMLElement {
-    public var attributes: HTMLAttributes
-    public let tagName: String = "img"
-    
-    public init(src: String, alt: String = "") {
-        attributes = HTMLAttributes(with: [
-            "src": src,
-            "alt": alt
-        ])
     }
 }
