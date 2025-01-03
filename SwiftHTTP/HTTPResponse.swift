@@ -2,7 +2,7 @@
 //  HTTPResponse.swift
 //  SwiftHTTP
 //
-//  Created by Leonard Fekete on 03.01.25.
+//  Created by CleverLemming on 03.01.25.
 //
 
 import Foundation
@@ -25,7 +25,7 @@ public struct HTTPResponse {
         """ // TODO: Ensure \n has leading \r
     }
     
-    public init(status: Int = .httpOK, headers: [String: String], httpVersion: String = "1.1", body: String) {
+    public init(status: Int = .httpOK, headers: [String: String] = [:], httpVersion: String = "1.1", _ body: String) {
         self.status = status
         self.httpVersion = httpVersion
         self.body = body

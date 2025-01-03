@@ -2,13 +2,13 @@
 //  ServerConnection.swift
 //  SwiftHTTP
 //
-//  Created by Leonard Fekete on 03.01.25.
+//  Created by CleverLemming on 03.01.25.
 //
 
 import Foundation
 import Network
 
-public class Server {
+public class HTTPServer {
     public let port: NWEndpoint.Port
     public let listener: NWListener
 
@@ -47,7 +47,7 @@ public class Server {
         connection.start()
         
         // Erstelle eine HTTP/1.1-Antwort
-        let response = HTTPResponse(headers: ["X-Hello-World": "Hello, world!"], body: "Hello, world!")
+        let response = HTTPResponse(headers: ["X-Hello-World": "Hello, world!"], "Hello, world!")
         
         // Sende die Antwort und schließe die Verbindung
         connection.send(data: response.httpText.data(using: .utf8)!)

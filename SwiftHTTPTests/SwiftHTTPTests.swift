@@ -10,17 +10,52 @@ import Testing
 
 struct SwiftHTTPTests {
 
-    @Test func example()  throws {
+    @Test func example() async throws {
         // Write your test here and use APIs like `#expect(...)` to check expected conditions.
-
-        func initServer(port: UInt16) {
-            let server = Server(port: port)
-            try! server.start()
-        }
-
-            
-              initServer(port: 8080)
-        RunLoop.current.run()
+        
+    }
+    
+    @Test("Route listing")
+    func listRoutes() async throws {
+        let server = TestServer()
+        
+        listRouting(server.routing)
     }
 
+}
+
+struct TestServer: Server {
+    let port = 8080
+    
+    var routing: Routing {
+        Endpoint { request in
+            print("Request to /")
+            return HTTPResponse("Hello, world!")
+        }
+        Route("people") {
+            Endpoint { request in
+                print("Request to /people/")
+                return HTTPResponse("Listing people")
+            }
+            Endpoint("new") { request in
+                print("Request to /people/new/")
+                return HTTPResponse("Creating new person")
+            }
+        }
+    }
+}
+
+func listRouting(_ routing: Routing, from startRoute: String = "/") {
+    for routingComponent in routing {
+        if let endpoint = routingComponent as? Endpoint {
+            print("\(startRoute.trimmingCharacters(in: .slashes))/\(endpoint.path.trimmingCharacters(in: .slashes))")
+        }
+        else if let route = routingComponent as? Route {
+            listRouting(route.endpoints, from: "\(startRoute.trimmingCharacters(in: .slashes))/\(route.path)")
+        }
+    }
+}
+
+extension CharacterSet {
+    static let slashes = CharacterSet(charactersIn: "/")
 }
