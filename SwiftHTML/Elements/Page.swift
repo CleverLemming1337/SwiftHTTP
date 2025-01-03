@@ -12,7 +12,7 @@ public struct Page: HTMLElement {
     public var tagName: String { "html" }
     public let name: String
     
-    @HTMLBuilder public var body: HTML {
+    public var body: HTML? {
         content
     }
     
