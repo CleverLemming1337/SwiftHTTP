@@ -39,7 +39,7 @@ public protocol HTMLElement: HTML {
 public extension HTMLElement {
     /// Default implementation to render an HTML element
     func render() -> String {
-        if let body = body as? EmptyHTML { // element has no own body
+        if body is EmptyHTML { // element has no own body
             if let attributes = Mirror(reflecting: self).children.filter({ $0.label == "attributes" }).first?.value as? HTMLAttributes {
                 return "<\(tag) \(attributes.render())/>"
             }
