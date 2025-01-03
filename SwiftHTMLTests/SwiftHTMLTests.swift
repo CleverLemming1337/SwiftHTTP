@@ -12,9 +12,12 @@ struct SwiftHTMLTests {
 
     @Test func example() async throws {
         // Write your test here and use APIs like `#expect(...)` to check expected conditions.
-        print(Page {
-            Img(from: "https://...", alt: "An image")
-        }.render())
+        
     }
-
+    
+    @Test func savePage() async throws {
+        Page {
+            Image(from: "https://...")
+        }.buildFile(to: URL(fileURLWithPath: "\(NSHomeDirectory())/Desktop"))
+    }
 }
