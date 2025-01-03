@@ -2,7 +2,7 @@
 //  Image.swift
 //  SwiftHTML
 //
-//  Created by Leonard Fekete on 03.01.25.
+//  Created by CleverLemming on 03.01.25.
 //
 
 import Foundation

@@ -2,7 +2,7 @@
 //  SwiftHTML.h
 //  SwiftHTML
 //
-//  Created by Leonard Fekete on 02.01.25.
+//  Created by CleverLemming on 02.01.25.
 //
 
 #import <Foundation/Foundation.h>
