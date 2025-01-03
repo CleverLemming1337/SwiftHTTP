@@ -32,7 +32,7 @@ public protocol HTML {
 
 /// Represents a basic HTML element
 public protocol HTMLElement: HTML {
-    var tagName: String { get }
+    var tag: String { get }
     @HTMLBuilder var body: HTML { get }
 }
 
@@ -41,17 +41,17 @@ public extension HTMLElement {
     func render() -> String {
         if let body = body as? EmptyHTML { // element has no own body
             if let attributes = Mirror(reflecting: self).children.filter({ $0.label == "attributes" }).first?.value as? HTMLAttributes {
-                return "<\(tagName) \(attributes.render())/>"
+                return "<\(tag) \(attributes.render())/>"
             }
             else {
-                return "<\(tagName)/>"
+                return "<\(tag)/>"
             }
         }
         
         if let attributes = Mirror(reflecting: self).children.filter({ $0.label == "attributes" }).first?.value as? HTMLAttributes {
-            return "<\(tagName) \(attributes.render())>\(body.render())</\(tagName)>"
+            return "<\(tag) \(attributes.render())>\(body.render())</\(tag)>"
         }
-        return "<\(tagName)>\(body.render())</\(tagName)>"
+        return "<\(tag)>\(body.render())</\(tag)>"
     }
     
     var body: HTML { EmptyHTML() }

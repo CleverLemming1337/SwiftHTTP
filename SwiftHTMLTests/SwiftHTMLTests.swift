@@ -16,14 +16,32 @@ struct SwiftHTMLTests {
     }
     
     @Test func savePage() async throws {
-        TestPage().buildFile(to: URL(fileURLWithPath: "\(NSHomeDirectory())/Desktop"))
+        SamplePage().buildFile(to: URL(fileURLWithPath: "\(NSHomeDirectory())/Desktop"))
     }
 }
 
-struct TestPage: HTMLPage {
+struct SamplePage: HTMLPage {
     let name = "TestPage"
     
     var body: HTML {
-        Image(from: "Test", alt: "Test")
+        Heading("This is SwiftHTML")
+        Image(from: "https://512pixels.net/wp-content/uploads/2024/06/15-Sequoia-Light-16x9-Thumbnail_2-500x500.jpg", alt: "This is an example image")
+        Paragraph("SwiftHTML is a Swift framework that lets you build HTML sites with Swift's declarative result builder syntax.\nHere an example:")
+        Code("""
+            struct SamplePage: HTMLPage {
+                let name = "TestPage"
+                
+                var body: HTML {
+                    Heading("This is SwiftHTML")
+                    Image(from: "https://512pixels.net/wp-content/uploads/2024/06/15-Sequoia-Light-16x9-Thumbnail_2-500x500.jpg", alt: "This is an example image")
+                    Paragraph("SwiftHTML is a Swift framework that lets you build HTML sites with Swift's declarative result builder syntax.\\nHere an example:")
+                    Code(\"""
+                        Heading("This is SwiftHTML")
+                        Image(from: "https://512pixels.net/wp-content/uploads/2024/06/15-Sequoia-Light-16x9-Thumbnail_2-500x500.jpg", alt: "This is an example image")
+                        Paragraph("SwiftHTML is a Swift framework that lets you build HTML sites with Swift's declarative result builder syntax.\\nHere an example:")
+                    \""")
+                }
+            }
+        """)
     }
 }

@@ -13,7 +13,7 @@ public protocol HTMLPage: HTMLElement {
 
 public extension HTMLPage {
     var name: String { UUID().uuidString }
-    var tagName: String { "html" }
+    var tag: String { "html" }
     
     func buildFile(to path: consuming URL) {
         let buildPath = path.appending(path: "build")
@@ -29,7 +29,7 @@ public extension HTMLPage {
 
 /// Represents a full HTML page
 public struct Page: HTMLPage {
-    public var tagName: String { "html" }
+    public var tag: String { "html" }
     public let name: String
     
     public var body: HTML {
