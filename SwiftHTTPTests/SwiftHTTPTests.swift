@@ -10,8 +10,17 @@ import Testing
 
 struct SwiftHTTPTests {
 
-    @Test func example() async throws {
+    @Test func example()  throws {
         // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+
+        func initServer(port: UInt16) {
+            let server = Server(port: port)
+            try! server.start()
+        }
+
+            
+              initServer(port: 8080)
+        RunLoop.current.run()
     }
 
 }

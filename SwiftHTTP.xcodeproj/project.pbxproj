@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		634F6E552B4238F200218453 /* SwiftHTTP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 634F6E4A2B4238F200218453 /* SwiftHTTP.framework */; };
 		634F6E742B42390E00218453 /* SwiftHTML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 634F6E6A2B42390E00218453 /* SwiftHTML.framework */; };
+		637BA7552D28472F006A32C9 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 637BA7542D28472F006A32C9 /* .gitignore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,11 +29,25 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		637BA73A2D2835CA006A32C9 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		634F6E4A2B4238F200218453 /* SwiftHTTP.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftHTTP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		634F6E542B4238F200218453 /* SwiftHTTPTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftHTTPTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		634F6E6A2B42390E00218453 /* SwiftHTML.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftHTML.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		634F6E732B42390E00218453 /* SwiftHTMLTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftHTMLTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		637BA73C2D2835CA006A32C9 /* SwiftHTTPExample */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SwiftHTTPExample; sourceTree = BUILT_PRODUCTS_DIR; };
+		637BA7542D28472F006A32C9 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -79,6 +94,11 @@
 			path = SwiftHTMLTests;
 			sourceTree = "<group>";
 		};
+		637BA73D2D2835CA006A32C9 /* SwiftHTTPExample */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SwiftHTTPExample;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,16 +132,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		637BA7392D2835CA006A32C9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		634F6E402B4238F200218453 = {
 			isa = PBXGroup;
 			children = (
+				637BA7542D28472F006A32C9 /* .gitignore */,
 				634F6E4C2B4238F200218453 /* SwiftHTTP */,
 				634F6E582B4238F200218453 /* SwiftHTTPTests */,
 				634F6E6B2B42390E00218453 /* SwiftHTML */,
 				634F6E772B42390E00218453 /* SwiftHTMLTests */,
+				637BA73D2D2835CA006A32C9 /* SwiftHTTPExample */,
 				634F6E4B2B4238F200218453 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -133,6 +162,7 @@
 				634F6E542B4238F200218453 /* SwiftHTTPTests.xctest */,
 				634F6E6A2B42390E00218453 /* SwiftHTML.framework */,
 				634F6E732B42390E00218453 /* SwiftHTMLTests.xctest */,
+				637BA73C2D2835CA006A32C9 /* SwiftHTTPExample */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -249,6 +279,28 @@
 			productReference = 634F6E732B42390E00218453 /* SwiftHTMLTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		637BA73B2D2835CA006A32C9 /* SwiftHTTPExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 637BA7402D2835CA006A32C9 /* Build configuration list for PBXNativeTarget "SwiftHTTPExample" */;
+			buildPhases = (
+				637BA7382D2835CA006A32C9 /* Sources */,
+				637BA7392D2835CA006A32C9 /* Frameworks */,
+				637BA73A2D2835CA006A32C9 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				637BA73D2D2835CA006A32C9 /* SwiftHTTPExample */,
+			);
+			name = SwiftHTTPExample;
+			packageProductDependencies = (
+			);
+			productName = SwiftHTTPExample;
+			productReference = 637BA73C2D2835CA006A32C9 /* SwiftHTTPExample */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -271,6 +323,9 @@
 					634F6E722B42390E00218453 = {
 						CreatedOnToolsVersion = 16.0;
 					};
+					637BA73B2D2835CA006A32C9 = {
+						CreatedOnToolsVersion = 16.0;
+					};
 				};
 			};
 			buildConfigurationList = 634F6E442B4238F200218453 /* Build configuration list for PBXProject "SwiftHTTP" */;
@@ -291,6 +346,7 @@
 				634F6E532B4238F200218453 /* SwiftHTTPTests */,
 				634F6E692B42390E00218453 /* SwiftHTML */,
 				634F6E722B42390E00218453 /* SwiftHTMLTests */,
+				637BA73B2D2835CA006A32C9 /* SwiftHTTPExample */,
 			);
 		};
 /* End PBXProject section */
@@ -314,6 +370,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				637BA7552D28472F006A32C9 /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,6 +406,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		634F6E6F2B42390E00218453 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		637BA7382D2835CA006A32C9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -679,6 +743,24 @@
 			};
 			name = Release;
 		};
+		637BA7412D2835CA006A32C9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		637BA7422D2835CA006A32C9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -723,6 +805,15 @@
 			buildConfigurations = (
 				634F6E802B42390E00218453 /* Debug */,
 				634F6E812B42390E00218453 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		637BA7402D2835CA006A32C9 /* Build configuration list for PBXNativeTarget "SwiftHTTPExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				637BA7412D2835CA006A32C9 /* Debug */,
+				637BA7422D2835CA006A32C9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
