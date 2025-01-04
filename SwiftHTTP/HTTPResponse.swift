@@ -32,7 +32,7 @@ public struct HTTPResponse {
         
         var newHeaders = headers
         if !headers.keys.contains("Content-Length") {
-            newHeaders["Content-Length"] = "\(body.count)"
+            newHeaders["Content-Length"] = "\(body.utf8.count)"
         }
         
         self.headers = newHeaders

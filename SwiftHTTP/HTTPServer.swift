@@ -47,13 +47,13 @@ public class HTTPServer {
         connection.didStopCallback = { _ in
             self.connectionDidStop(connection)
         }
-        connection.start()
+        connection.start(with: handleRequest)
         
         // Erstelle eine HTTP/1.1-Antwort
-        let response = HTTPResponse(headers: ["X-Hello-World": "Hello, world!"], "Hello, world!")
+//        let response = HTTPResponse(headers: ["X-Hello-World": "Hello, world!"], "Hello, world!")
         
         // Sende die Antwort und schließe die Verbindung
-        connection.send(data: response.httpText.data(using: .utf8)!)
+//        connection.send(data: response.httpText.data(using: .utf8)!)
         print("server did open connection \(connection.id)")
     }
 
@@ -93,10 +93,10 @@ public class ServerConnection {
 
     public var didStopCallback: ((Error?) -> Void)? = nil
 
-    public func start() {
+    public func start(with handleReceive: @escaping (HTTPRequest) -> HTTPResponse) {
         print("connection \(id) will start")
         connection.stateUpdateHandler = self.stateDidChange(to:)
-        setupReceive()
+        setupReceive(with: handleReceive)
         connection.start(queue: .main)
     }
 
@@ -113,22 +113,34 @@ public class ServerConnection {
         }
     }
 
-    private func setupReceive() {
+    private func setupReceive(with handleRequest: @escaping (HTTPRequest) -> HTTPResponse) {
         connection.receive(minimumIncompleteLength: 1, maximumLength: MTU) { (data, _, isComplete, error) in
             if let data = data, !data.isEmpty {
-                let message = String(data: data, encoding: .utf8)
-                print("connection \(self.id) did receive, data: \(data as NSData) string: \(message ?? "-")")
-                self.send(data: data)
+                // Konvertiere die empfangenen Daten in einen String (oder analysiere sie anders)
+                if let message = String(data: data, encoding: .utf8) {
+                    print("connection \(self.id) did receive, string: \(message)")
+                    
+                    if let request = parseHTTPRequestText(message) {
+                        let response = handleRequest(request)
+                        self.send(data: response.httpText.data(using: .utf8)!)
+                    }
+                    
+                    // HTTP text couldn't be parsed
+                    self.send(data: HTTPResponse(status: .httpUnprocessableEntity, "Invalid HTTP data").httpText.data(using: .utf8)!)
+                    
+                }
             }
+            
             if isComplete {
                 self.connectionDidEnd()
             } else if let error = error {
                 self.connectionDidFail(error: error)
             } else {
-                self.setupReceive()
+                self.setupReceive(with: handleRequest) // Warten auf mehr Daten
             }
         }
     }
+
 
 
     public func send(data: Data) {

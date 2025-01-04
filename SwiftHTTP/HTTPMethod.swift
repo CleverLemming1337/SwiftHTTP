@@ -7,12 +7,12 @@
 
 import Foundation
 
-public enum HTTPMethod {
-    case get
-    case post
-    case put
-    case patch
-    case delete
-    case trace
-    case other(method: String)
+public enum HTTPMethod: String {
+    case get = "GET"
+    case post = "POST"
+    case put = "PUT"
+    case delete = "DELETE"
+    case patch = "PATCH"
+    case head = "HEAD"
+    case options = "OPTIONS"
 }
