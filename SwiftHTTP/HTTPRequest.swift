@@ -52,7 +52,7 @@ public func parseHTTPRequestText(_ text: String) -> HTTPRequest? {
     // Analysiere die Statuszeile
     let requestLineParts = requestLine.split(separator: " ", maxSplits: 2)
     guard requestLineParts.count == 3,
-          let method = HTTPMethod(rawValue: String(requestLineParts[0])),
+          let method = HTTPMethod(rawValue: String(requestLineParts[0])), // TODO: Returning `nil` is currently handled outside and sends `422 Unprocessable Entity` an unknown method should send `405 Method Not Allowed`
           let httpVersion = requestLineParts.last?.split(separator: "/").last else {
         return nil
     }

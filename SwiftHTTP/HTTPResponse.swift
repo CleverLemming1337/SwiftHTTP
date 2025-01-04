@@ -37,6 +37,10 @@ public struct HTTPResponse {
         
         self.headers = newHeaders
     }
+    
+    public func removingBody() -> HTTPResponse {
+        return HTTPResponse(status: status, headers: headers, httpVersion: httpVersion, "")
+    }
 }
 
 public struct HTTPHeader {

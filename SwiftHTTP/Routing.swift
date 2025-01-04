@@ -23,19 +23,29 @@ public protocol RoutingComponent {
 // Endpoint für den Routing-Mechanismus
 public struct Endpoint: RoutingComponent {
     public let path: String
+    public let method: HTTPMethod
     public var handleRequest: (HTTPRequest, String) -> HTTPResponse
     public let processRequest: (HTTPRequest) -> HTTPResponse // This makes creating endpoints more comforting so you just write `request in` instead of `request, _ in`
     
-    public init(_ path: String = "", _ processRequest: @escaping (HTTPRequest) -> HTTPResponse) {
+    public init(method: HTTPMethod = .get, _ path: String = "", _ processRequest: @escaping (HTTPRequest) -> HTTPResponse) {
+        self.method = method
         self.path = path
         self.processRequest = processRequest
         self.handleRequest = { _, _ in HTTPResponse(status: .httpInternalServerError, "Internal server error") } // complete initializer first before accessing `self`
         
         
         self.handleRequest = { [self] request, _ in
-            self.processRequest(request)
+            if request.method == .head && method == .get {
+                return self.processRequest(request).removingBody()
+            }
+            if request.method == .options {
+                return HTTPResponse(headers: ["Content-Type": "application/json"], "[\"\(method.rawValue)\"]")
+            }
+            if request.method == method {
+                return self.processRequest(request)
+            }
+            return HTTPResponse(status: .httpMethodNotAllowed, "Method not allowed")
         }
-        
     }
 }
 
