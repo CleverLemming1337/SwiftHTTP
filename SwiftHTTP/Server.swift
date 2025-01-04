@@ -11,7 +11,6 @@ import Network
 public func startServer() throws {
     let server = HTTPServer(port: 8080, handleRequest: { _, _ in HTTPResponse("Hello, world!") })
     try server.start()
-    print("Server läuft auf Port 8080")
     
     RunLoop.main.run()
 }
@@ -29,12 +28,11 @@ public extension Server {
     }
     
     func handleRequest(_ request: HTTPRequest, _ path: String) -> HTTPResponse {
-        print(request.path)
         var pathComponents = request.path.trimmingCharacters(in: CharacterSet(charactersIn: "/")).split(separator: "/")
         if pathComponents.count == 0 {
             pathComponents = [""]
         }
-        print("Searching \(pathComponents) with \(pathComponents[0])")
+        
         for routingComponent in routing {
             if routingComponent.path == pathComponents[0] {
                 return routingComponent.handleRequest(request, path)

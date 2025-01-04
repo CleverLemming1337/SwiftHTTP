@@ -32,7 +32,7 @@ public class HTTPServer {
     public func stateDidChange(to newState: NWListener.State) {
         switch newState {
         case .ready:
-          print("Server ready.")
+          print("Server listening on port \(port)")
         case .failed(let error):
             print("Server failure, error: \(error.localizedDescription)")
             exit(EXIT_FAILURE)
@@ -47,20 +47,16 @@ public class HTTPServer {
         connection.didStopCallback = { _ in
             self.connectionDidStop(connection)
         }
+        
         connection.start(with: handleRequest)
         
-        // Erstelle eine HTTP/1.1-Antwort
-//        let response = HTTPResponse(headers: ["X-Hello-World": "Hello, world!"], "Hello, world!")
-        
-        // Sende die Antwort und schließe die Verbindung
-//        connection.send(data: response.httpText.data(using: .utf8)!)
-        print("server did open connection \(connection.id)")
+        print("Server did open connection #\(connection.id)")
     }
 
 
     private func connectionDidStop(_ connection: ServerConnection) {
         self.connectionsByID.removeValue(forKey: connection.id)
-        print("server did close connection \(connection.id)")
+        print("Server did close connection #\(connection.id)")
     }
 
     private func stop() {
@@ -94,7 +90,6 @@ public class ServerConnection {
     public var didStopCallback: ((Error?) -> Void)? = nil
 
     public func start(with handleReceive: @escaping (HTTPRequest, String) -> HTTPResponse) {
-        print("connection \(id) will start")
         connection.stateUpdateHandler = self.stateDidChange(to:)
         setupReceive(with: handleReceive)
         connection.start(queue: .main)
@@ -105,7 +100,7 @@ public class ServerConnection {
         case .waiting(let error):
             connectionDidFail(error: error)
         case .ready:
-            print("connection \(id) ready")
+            print("Connection #\(id) ready")
         case .failed(let error):
             connectionDidFail(error: error)
         default:
@@ -118,10 +113,11 @@ public class ServerConnection {
             if let data = data, !data.isEmpty {
                 // Konvertiere die empfangenen Daten in einen String (oder analysiere sie anders)
                 if let message = String(data: data, encoding: .utf8) {
-                    print("connection \(self.id) did receive, string: \(message)")
-                    
                     if let request = parseHTTPRequestText(message) {
+                        print("> \(request.method.rawValue) \(request.path) HTTP/\(request.httpVersion)")
                         let response = handleRequest(request, request.path)
+                        print("< \(response.status)")
+                        
                         self.send(data: response.httpText.data(using: .utf8)!)
                     }
                     
@@ -149,23 +145,22 @@ public class ServerConnection {
                 self.connectionDidFail(error: error)
                 return
             }
-            print("connection \(self.id) did send, data: \(data as NSData)")
         }))
     }
 
     public func stop() {
-        print("connection \(id) will stop")
+        print("Connection #\(id) will stop")
     }
 
 
 
     private func connectionDidFail(error: Error) {
-        print("connection \(id) did fail, error: \(error)")
+        print("Connection #\(id) did fail, error: \(error)")
         stop(error: error)
     }
 
     private func connectionDidEnd() {
-        print("connection \(id) did end")
+        print("Connection #\(id) did end")
         stop(error: nil)
     }
 

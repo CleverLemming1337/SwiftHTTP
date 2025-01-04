@@ -52,7 +52,6 @@ public struct Route: RoutingComponent {
         
         handleRequest = { [self] request, path in
             let path = (path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))+"/").split(separator: "/")[1...].joined(separator: "/")
-            print("Searching \(path) in \(self.path)")
             for routingComponent in routing {
                 if path == routingComponent.path {
                     return routingComponent.handleRequest(request, path)
