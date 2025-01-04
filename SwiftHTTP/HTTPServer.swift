@@ -12,11 +12,11 @@ public class HTTPServer {
     public let port: NWEndpoint.Port
     public let listener: NWListener
     
-    public let handleRequest: (HTTPRequest) -> HTTPResponse
+    public let handleRequest: (HTTPRequest, String) -> HTTPResponse
 
     private var connectionsByID: [Int: ServerConnection] = [:]
 
-    public init(port: UInt16, handleRequest: @escaping (HTTPRequest) -> HTTPResponse) {
+    public init(port: UInt16, handleRequest: @escaping (HTTPRequest, String) -> HTTPResponse) {
         self.port = NWEndpoint.Port(rawValue: port)!
         self.handleRequest = handleRequest
         listener = try! NWListener(using: .tcp, on: self.port)
@@ -93,7 +93,7 @@ public class ServerConnection {
 
     public var didStopCallback: ((Error?) -> Void)? = nil
 
-    public func start(with handleReceive: @escaping (HTTPRequest) -> HTTPResponse) {
+    public func start(with handleReceive: @escaping (HTTPRequest, String) -> HTTPResponse) {
         print("connection \(id) will start")
         connection.stateUpdateHandler = self.stateDidChange(to:)
         setupReceive(with: handleReceive)
@@ -113,7 +113,7 @@ public class ServerConnection {
         }
     }
 
-    private func setupReceive(with handleRequest: @escaping (HTTPRequest) -> HTTPResponse) {
+    private func setupReceive(with handleRequest: @escaping (HTTPRequest, String) -> HTTPResponse) {
         connection.receive(minimumIncompleteLength: 1, maximumLength: MTU) { (data, _, isComplete, error) in
             if let data = data, !data.isEmpty {
                 // Konvertiere die empfangenen Daten in einen String (oder analysiere sie anders)
@@ -121,7 +121,7 @@ public class ServerConnection {
                     print("connection \(self.id) did receive, string: \(message)")
                     
                     if let request = parseHTTPRequestText(message) {
-                        let response = handleRequest(request)
+                        let response = handleRequest(request, request.path)
                         self.send(data: response.httpText.data(using: .utf8)!)
                     }
                     

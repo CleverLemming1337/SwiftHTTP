@@ -20,7 +20,7 @@ public struct HTTPRequest {
     
     var httpText: String {
         """
-        HTTP/\(httpVersion) \("\(method)".uppercased())\r
+        \(method.rawValue) HTTP/\(httpVersion)\r
         \(headers.map { key, value in "\(key): \(value)" }.joined(separator: "\r\n"))\r
         \r
         \(body)

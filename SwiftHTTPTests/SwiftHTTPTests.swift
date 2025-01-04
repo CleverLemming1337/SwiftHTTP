@@ -21,6 +21,13 @@ struct SwiftHTTPTests {
         
         listRouting(server.routing)
     }
+    
+    @Test("Route handling")
+    func handleRoutes() async throws {
+        let server = TestServer()
+        try server.start()
+        print(server.handleRequest(HTTPRequest("/people", headers: [:], body: "Hello"), "/people"))
+    }
 
 }
 
@@ -28,16 +35,16 @@ struct TestServer: Server {
     let port = 8080
     
     var routing: Routing {
-        Endpoint { request in
+        Endpoint { request, _ in
             print("Request to /")
             return HTTPResponse("Hello, world!")
         }
         Route("people") {
-            Endpoint { request in
+            Endpoint { request, _ in
                 print("Request to /people/")
                 return HTTPResponse("Listing people")
             }
-            Endpoint("new") { request in
+            Endpoint("new") { request, _ in
                 print("Request to /people/new/")
                 return HTTPResponse("Creating new person")
             }
@@ -51,7 +58,7 @@ func listRouting(_ routing: Routing, from startRoute: String = "/") {
             print("\(startRoute.trimmingCharacters(in: .slashes))/\(endpoint.path.trimmingCharacters(in: .slashes))")
         }
         else if let route = routingComponent as? Route {
-            listRouting(route.endpoints, from: "\(startRoute.trimmingCharacters(in: .slashes))/\(route.path)")
+            listRouting(route.routing, from: "\(startRoute.trimmingCharacters(in: .slashes))/\(route.path)")
         }
     }
 }
