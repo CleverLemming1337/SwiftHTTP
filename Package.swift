@@ -7,31 +7,61 @@ let package = Package(
         .macOS(.v13)
     ],
     products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
-        .executable(
-            name: "SwiftHTTP",
-            targets: ["SwiftHTTPExample", "SwiftHTTP"]),
+        // Library for SwiftHTTP
         .library(
             name: "SwiftHTTP",
             targets: ["SwiftHTTP"]
         ),
+        // Library for SwiftHTML
+        .library(
+            name: "SwiftHTML",
+            targets: ["SwiftHTML"]
+        ),
+        // Executable for CLI example
+        .executable(
+            name: "SwiftHTTPExample",
+            targets: ["SwiftHTTPExample"]
+        ),
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
+        // Dependencies can be added here, if needed.
+        // Example:
+        // .package(url: "https://github.com/Some/Package.git", from: "1.0.0"),
     ],
     targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
+        // Framework: SwiftHTTP
+        .target(
+            name: "SwiftHTTP",
+            path: "SwiftHTTP",
+            resources: [
+                // Add any resource files here if needed
+            ]
+        ),
+        // Tests for SwiftHTTP
+        .testTarget(
+            name: "SwiftHTTPTests",
+            dependencies: ["SwiftHTTP"],
+            path: "SwiftHTTPTests"
+        ),
+        // Framework: SwiftHTML
+        .target(
+            name: "SwiftHTML",
+            path: "SwiftHTML",
+            resources: [
+                // Add any resource files here if needed
+            ]
+        ),
+        // Tests for SwiftHTML
+        .testTarget(
+            name: "SwiftHTMLTests",
+            dependencies: ["SwiftHTML"],
+            path: "SwiftHTMLTests"
+        ),
+        // CLI Example for SwiftHTTP
         .executableTarget(
             name: "SwiftHTTPExample",
             dependencies: ["SwiftHTTP"],
             path: "SwiftHTTPExample"
-           
-        ),
-        .target(
-            name: "SwiftHTTP",
-            path: "SwiftHTTP"
         )
-
     ]
 )
