@@ -11,11 +11,14 @@ import Network
 public class HTTPServer {
     public let port: NWEndpoint.Port
     public let listener: NWListener
+    
+    public let handleRequest: (HTTPRequest) -> HTTPResponse
 
     private var connectionsByID: [Int: ServerConnection] = [:]
 
-    public init(port: UInt16) {
+    public init(port: UInt16, handleRequest: @escaping (HTTPRequest) -> HTTPResponse) {
         self.port = NWEndpoint.Port(rawValue: port)!
+        self.handleRequest = handleRequest
         listener = try! NWListener(using: .tcp, on: self.port)
     }
 
@@ -80,6 +83,7 @@ public class ServerConnection {
     private static var nextID: Int = 0
     public let  connection: NWConnection
     public let id: Int
+    public var data: String? = nil
 
     public init(nwConnection: NWConnection) {
         connection = nwConnection

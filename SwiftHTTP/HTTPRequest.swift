@@ -16,6 +16,8 @@ public struct HTTPRequest {
     
     let body: String
     
+    let path: String
+    
     var httpText: String {
         """
         HTTP/\(httpVersion) \("\(method)".uppercased())\r
@@ -25,7 +27,8 @@ public struct HTTPRequest {
         """ // TODO: Ensure \n has leading \r
     }
     
-    public init(method: HTTPMethod = .get, headers: [String: String], httpVersion: String = "1.1", body: String) {
+    public init(_ path: String, method: HTTPMethod = .get, headers: [String: String], httpVersion: String = "1.1", body: String) {
+        self.path = path
         self.method = method
         self.httpVersion = httpVersion
         self.body = body

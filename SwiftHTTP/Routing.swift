@@ -17,16 +17,17 @@ public struct RoutingBuilder {
 
 public protocol RoutingComponent {
     var path: String { get }
+    var handleRequest: (HTTPRequest) -> HTTPResponse { get }
 }
 
 // Endpoint für den Routing-Mechanismus
 public struct Endpoint: RoutingComponent {
     public let path: String
-    let handler: (HTTPRequest) -> HTTPResponse
+    public let handleRequest: (HTTPRequest) -> HTTPResponse
     
     init(_ path: String = "", _ handler: @escaping (HTTPRequest) -> HTTPResponse) {
         self.path = path
-        self.handler = handler
+        self.handleRequest = handler
     }
 }
 
@@ -38,6 +39,10 @@ public struct Route: RoutingComponent {
     init(_ path: String, @RoutingBuilder builder: () -> [RoutingComponent]) {
         self.path = path
         self.endpoints = builder()
+    }
+    
+    public var handleRequest: (HTTPRequest) -> HTTPResponse = { request in
+        return HTTPResponse(status: .httpNotImplemented, "Not implemented")
     }
 }
 
