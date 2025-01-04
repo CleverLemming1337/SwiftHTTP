@@ -23,11 +23,19 @@ public protocol RoutingComponent {
 // Endpoint für den Routing-Mechanismus
 public struct Endpoint: RoutingComponent {
     public let path: String
-    public let handleRequest: (HTTPRequest, String) -> HTTPResponse
+    public var handleRequest: (HTTPRequest, String) -> HTTPResponse
+    public let processRequest: (HTTPRequest) -> HTTPResponse // This makes creating endpoints more comforting so you just write `request in` instead of `request, _ in`
     
-    public init(_ path: String = "", _ handler: @escaping (HTTPRequest, String) -> HTTPResponse) {
+    public init(_ path: String = "", _ processRequest: @escaping (HTTPRequest) -> HTTPResponse) {
         self.path = path
-        self.handleRequest = handler
+        self.processRequest = processRequest
+        self.handleRequest = { _, _ in HTTPResponse(status: .httpInternalServerError, "Internal server error") } // complete initializer first before accessing `self`
+        
+        
+        self.handleRequest = { [self] request, _ in
+            self.processRequest(request)
+        }
+        
     }
 }
 
