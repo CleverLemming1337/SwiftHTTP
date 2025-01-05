@@ -115,9 +115,9 @@ public class ServerConnection {
                 if let message = String(data: data, encoding: .utf8) {
                     print(message)
                     if let request = parseHTTPRequestText(message) {
-                        print("> \(request.method.rawValue) \(request.path) HTTP/\(request.httpVersion)")
+                        print("> \(httpMethodFormatted(request.method)) \(request.path) HTTP/\(request.httpVersion)")
                         let response = handleRequest(request, request.path)
-                        print("< \(response.status)")
+                        print("< \(httpStatusCodeFormatted(response.status))")
                         
                         self.send(data: response.httpText.data(using: .utf8)!)
                     }
