@@ -33,11 +33,17 @@ public extension Server {
             pathComponents = [""]
         }
         
-        for routingComponent in routing {
-            if routingComponent.path == pathComponents[0] {
+        let matchingRoutingComponents = routing.filter { $0.path == pathComponents[0] }
+        if matchingRoutingComponents.isEmpty { // No routes found
+            return HTTPResponse(status: .httpNotFound, "Not found")
+        }
+        
+        for routingComponent in matchingRoutingComponents {
+            if routingComponent.method == nil || routingComponent.method! == request.method {
                 return routingComponent.handleRequest(request, path)
             }
         }
-        return HTTPResponse(status: .httpNotFound, "Not found")
+        
+        return HTTPResponse(status: .httpMethodNotAllowed, "Method not allowed.")
     }
 }

@@ -8,17 +8,17 @@
 import Foundation
 
 public struct HTTPRequest {
-    let method: HTTPMethod
+    public let method: HTTPMethod
     
-    let headers: [String: String]
+    public let headers: [String: String]
     
-    let httpVersion: String
+    public let httpVersion: String
     
-    let body: String
+    public let body: String
     
-    let path: String
+    public let path: String
     
-    var httpText: String {
+    public var httpText: String {
         """
         \(method.rawValue) HTTP/\(httpVersion)\r
         \(headers.map { key, value in "\(key): \(value)" }.joined(separator: "\r\n"))\r
