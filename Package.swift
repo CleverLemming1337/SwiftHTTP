@@ -32,10 +32,8 @@ let package = Package(
         // Framework: SwiftHTTP
         .target(
             name: "SwiftHTTP",
-            path: "SwiftHTTP",
-            resources: [
-                // Add any resource files here if needed
-            ]
+	    dependencies: ["SwiftHTML"],
+            path: "SwiftHTTP"
         ),
         // Tests for SwiftHTTP
         .testTarget(

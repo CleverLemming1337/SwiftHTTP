@@ -1,4 +1,5 @@
 import SwiftHTTP
+import SwiftHTML
 
 struct SampleServer: Server {
     let port = 8080
@@ -15,11 +16,25 @@ struct SampleServer: Server {
             }
             Endpoint("new") { request in
                 print("Request to /people/new/")
-                return HTTPResponse("Creating new person")
+                return HTTPResponse(CreatePersonPage())
             }
         }
     }
 }
+
+struct CreatePersonPage: HTMLPage {
+    let name = "CreatePersonPage"
+    
+    var body: HTML {
+        Heading("Create person")
+        Form(action: "/handleform") {
+            Input(name: "name", placeholder: "Enter the new person's name")
+            LineBreak()
+            Input(.submit, value: "Submit")
+        }
+    }
+}
+
 do {
     try SampleServer().start()
 }

@@ -47,4 +47,6 @@ public struct Paragraph: HTMLElement {
 
 public struct LineBreak: HTMLElement {
     public let tag = "br"
+    
+    public init() {} // Make `init()` public
 }

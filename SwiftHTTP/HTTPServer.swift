@@ -113,6 +113,7 @@ public class ServerConnection {
             if let data = data, !data.isEmpty {
                 // Konvertiere die empfangenen Daten in einen String (oder analysiere sie anders)
                 if let message = String(data: data, encoding: .utf8) {
+                    print(message)
                     if let request = parseHTTPRequestText(message) {
                         print("> \(request.method.rawValue) \(request.path) HTTP/\(request.httpVersion)")
                         let response = handleRequest(request, request.path)
@@ -120,10 +121,10 @@ public class ServerConnection {
                         
                         self.send(data: response.httpText.data(using: .utf8)!)
                     }
-                    
-                    // HTTP text couldn't be parsed
-                    self.send(data: HTTPResponse(status: .httpUnprocessableEntity, "Invalid HTTP data").httpText.data(using: .utf8)!)
-                    
+                    else {
+                        // HTTP text couldn't be parsed
+                        self.send(data: HTTPResponse(status: .httpUnprocessableEntity, "Invalid HTTP data").httpText.data(using: .utf8)!)
+                    }
                 }
             }
             

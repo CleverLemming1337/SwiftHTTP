@@ -25,8 +25,13 @@ struct SwiftHTTPTests {
     @Test("Route handling")
     func handleRoutes() async throws {
         let server = TestServer()
-        try server.start()
         print(server.handleRequest(HTTPRequest("/people", headers: [:], body: "Hello"), "/people"))
+    }
+    
+    @Test("Content-Length")
+    func contentLength() async throws {
+        let server = TestServer()
+        print(server.handleRequest(HTTPRequest("/people/new", headers: [:], body: "Hello"), "/people/new"))
     }
 
 }

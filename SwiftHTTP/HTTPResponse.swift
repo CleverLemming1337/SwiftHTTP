@@ -7,6 +7,8 @@
 
 import Foundation
 
+public typealias Response = HTTPResponse
+
 public struct HTTPResponse {
     let status: Int
     
