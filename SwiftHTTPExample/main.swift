@@ -19,7 +19,14 @@ struct SampleServer: Server {
                 return HTTPResponse(CreatePersonPage())
             }
             Endpoint(method: .post, "new") { request in
-                return HTTPResponse("You created a person with: \(request.body)")
+                guard request.headers["Content-Type"] == "application/x-www-form-urlencoded" else {
+                    return HTTPResponse(status: .httpNotAcceptable, headers: ["Accept": "application/x-www-form-urlencoded"], "Not acceptable.")
+                }
+                guard let formData = request.formData else { return HTTPResponse(status: .httpUnprocessableEntity, "Invalid form data") }
+                let name = formData["name", default: "unknown"]
+                let age = formData["age", default: "unknown"]
+                
+                return HTTPResponse("You created a person with name: \(name) and age: \(age != "" ? age : "empty")")
             }
         }
         Route(method: .get, "tests") {
@@ -36,7 +43,9 @@ struct CreatePersonPage: HTMLPage {
     var body: HTML {
         Heading("Create person")
         Form(action: "/people/new") {
-            Input(name: "name", placeholder: "Enter the new person's name")
+            Input(name: "name", placeholder: "Enter the new person's name", required: true)
+            LineBreak()
+            Input(.number, name: "age", placeholder: "Age")
             LineBreak()
             Input(.submit, value: "Submit")
         }

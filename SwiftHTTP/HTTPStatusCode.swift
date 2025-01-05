@@ -11,6 +11,7 @@ public extension Int {
     static let httpOK = 200
     static let httpNotFound = 404
     static let httpMethodNotAllowed = 405
+    static let httpNotAcceptable = 406
     static let httpTeapot = 418
     static let httpUnprocessableEntity = 422
     static let httpInternalServerError = 500
@@ -25,6 +26,8 @@ public func getHTTPStatusCodeName(_ status: Int) -> String{
         return "Not Found"
     case 405:
         return "Method Not Allowed"
+    case 406:
+        return "Not acceptable"
     case 418:
         return "I'm a teapot"
     case 422:

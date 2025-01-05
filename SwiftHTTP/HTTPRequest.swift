@@ -34,6 +34,25 @@ public struct HTTPRequest {
         self.body = body
         self.headers = headers
     }
+    
+    public var formData: [String: String]? {
+        if headers["Content-Type"] != "application/x-www-form-urlencoded" {
+            return nil
+        }
+        var result = [String: String]()
+        
+        for payload in body.split(separator: "&") {
+            let pair = payload.split(separator: "=")
+            if pair.count == 1 {
+                result[String(pair[0])] = ""
+                continue
+            }
+            guard pair.count == 2 else { return nil }
+            result[String(pair[0])] = String(pair[1])
+        }
+        
+        return result
+    }
 }
 
 public func parseHTTPRequestText(_ text: String) -> HTTPRequest? {
