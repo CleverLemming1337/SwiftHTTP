@@ -7,8 +7,9 @@
 
 import Foundation
 
-@dynamicMemberLookup public struct HTMLAttributes {
-    private var attributes: [String: String] = [:]
+@dynamicMemberLookup public class HTMLAttributes {
+    private var attributes: [String: String]
+    public var boolAttributes: [String]
     
     public subscript(dynamicMember attribute: String) -> String {
         return attributes[attribute, default: ""]
@@ -16,14 +17,16 @@ import Foundation
     
     public init() {
         attributes = [:]
+        boolAttributes = []
     }
     
-    public init(with attributes: [String: String]) {
+    public init(with attributes: [String: String], boolAttributes: [String] = []) {
         self.attributes = attributes
+        self.boolAttributes = boolAttributes
     }
     
     public func render() -> String {
-        return attributes.map { key, value in "\(key)=\"\(value)\"" }.joined(separator: " ")
+        return attributes.map { key, value in "\(key)=\"\(value)\"" }.joined(separator: " ") + " " + boolAttributes.joined(separator: " ")
     }
 }
 

@@ -41,13 +41,17 @@ public struct Input: HTMLElement {
     public let tag = "input"
     public let attributes: HTMLAttributes
     
-    public init(_ type: InputType = .text, name: String = "", value: String = "", placeholder: String = "") {
+    public init(_ type: InputType = .text, name: String = "", value: String = "", placeholder: String = "", required: Bool = false) {
         attributes = HTMLAttributes(with: [
             "type": "\(type)",
             "name": name,
             "value": value,
             "placeholder": placeholder
         ])
+        
+        if required {
+            attributes.boolAttributes.append("required")
+        }
     }
     
     public enum InputType {
