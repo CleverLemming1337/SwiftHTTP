@@ -9,7 +9,7 @@ import Foundation
 import SwiftHTML
 
 public extension HTTPResponse {
-    init(status: Int = .httpOK, headers: [String: String] = [:], httpVersion: String = "1.1", _ page: HTMLPage) {
+    init(status: Int = .httpOK, headers: [String: String] = [:], _ page: HTMLPage) {
         self.status = status
         let body = page.render()
         self.body = body
@@ -24,8 +24,6 @@ public extension HTTPResponse {
         self.headers = newHeaders
         
         print(newHeaders)
-        
-        self.httpVersion = httpVersion
         
         print(httpText)
     }

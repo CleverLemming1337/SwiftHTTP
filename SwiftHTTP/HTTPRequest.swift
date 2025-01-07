@@ -12,25 +12,22 @@ public struct HTTPRequest {
     
     public let headers: [String: String]
     
-    public let httpVersion: String
-    
     public let body: String
     
     public let path: String
     
     public var httpText: String {
         """
-        \(method.rawValue) HTTP/\(httpVersion)\r
+        \(method.rawValue) HTTP/1.1\r
         \(headers.map { key, value in "\(key): \(value)" }.joined(separator: "\r\n"))\r
         \r
         \(body)
         """ // TODO: Ensure \n has leading \r
     }
     
-    public init(_ path: String, method: HTTPMethod = .get, headers: [String: String], httpVersion: String = "1.1", body: String) {
+    public init(_ path: String, method: HTTPMethod = .get, headers: [String: String], body: String) {
         self.path = path
         self.method = method
-        self.httpVersion = httpVersion
         self.body = body
         self.headers = headers
     }
@@ -56,28 +53,24 @@ public struct HTTPRequest {
 }
 
 public func parseHTTPRequestText(_ text: String) -> HTTPRequest? {
-    // Zerlege die Eingabe in Header und Body
     let parts = text.split(separator: "\r\n\r\n", maxSplits: 1, omittingEmptySubsequences: false)
     guard parts.count >= 1 else { return nil }
     
     let headerPart = String(parts[0])
     let bodyPart = parts.count > 1 ? String(parts[1]) : ""
-
-    // Zerlege die Header in Zeilen
+    
     var lines = headerPart.split(separator: "\r\n", omittingEmptySubsequences: true).map(String.init)
     guard let requestLine = lines.first else { return nil }
-    lines.removeFirst() // Entferne die Statuszeile
-
-    // Analysiere die Statuszeile
+    lines.removeFirst()
+    
     let requestLineParts = requestLine.split(separator: " ", maxSplits: 2)
     guard requestLineParts.count == 3,
-          let method = HTTPMethod(rawValue: String(requestLineParts[0])), // TODO: Returning `nil` is currently handled outside and sends `422 Unprocessable Entity` an unknown method should send `405 Method Not Allowed`
+          let method = HTTPMethod(rawValue: String(requestLineParts[0])), // TODO: Returning `nil` is currently handled outside and sends `422 Unprocessable Entity`, an unknown method should send `405 Method Not Allowed`
           let httpVersion = requestLineParts.last?.split(separator: "/").last else {
         return nil
     }
     let path = String(requestLineParts[1])
 
-    // Analysiere die Header
     var headers: [String: String] = [:]
     for line in lines {
         let headerParts = line.split(separator: ":", maxSplits: 1, omittingEmptySubsequences: true)
@@ -87,6 +80,5 @@ public func parseHTTPRequestText(_ text: String) -> HTTPRequest? {
         headers[key] = value
     }
 
-    // Erstelle und gib die HTTPRequest-Instanz zurück
-    return HTTPRequest(path, method: method, headers: headers, httpVersion: String(httpVersion), body: bodyPart)
+    return HTTPRequest(path, method: method, headers: headers, body: bodyPart)
 }

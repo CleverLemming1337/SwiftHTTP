@@ -115,7 +115,7 @@ public class ServerConnection {
                 if let message = String(data: data, encoding: .utf8) {
                     print(message)
                     if let request = parseHTTPRequestText(message) {
-                        print("> \(httpMethodFormatted(request.method)) \(request.path) HTTP/\(request.httpVersion)")
+                        print("> \(httpMethodFormatted(request.method)) \(request.path) HTTP/1.1")
                         let response = handleRequest(request, request.path)
                         print("< \(httpStatusCodeFormatted(response.status))")
                         

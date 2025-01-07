@@ -14,22 +14,19 @@ public struct HTTPResponse {
     
     let headers: [String: String]
     
-    let httpVersion: String
-    
     let body: String
     
     var httpText: String {
         """
-        HTTP/\(httpVersion) \(status)\r
+        HTTP/1.1 \(status)\r
         \(headers.map { key, value in "\(key): \(value)" }.joined(separator: "\r\n"))\r
         \r
         \(body)
         """ // TODO: Ensure \n has leading \r
     }
     
-    public init(status: Int = .httpOK, headers: [String: String] = [:], httpVersion: String = "1.1", _ body: String) {
+    public init(status: Int = .httpOK, headers: [String: String] = [:], _ body: String) {
         self.status = status
-        self.httpVersion = httpVersion
         self.body = body
         
         var newHeaders = headers
